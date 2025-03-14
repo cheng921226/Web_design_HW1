@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dcard 維護中</title>
+    <link rel="stylesheet" href="style.css">
+    <style>body {
+        font-family: 'Noto Sans TC', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+    }
+
+    .container {
+        text-align: center;
+        padding: 40px;
+        background-color: #02324d;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+        width: 150px;
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    p {
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .countdown {
+        margin-bottom: 20px;
+    }
+
+    #timer {
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+
+    .message {
+        display: none;
+        color: #008000;
+        font-weight: bold;
+    }</style>
+</head>
+<body>
+<div class="container">
+    <img src="dcard_logo.png" alt="Dcard Logo" class="logo">
+    <h1>網站維護中</h1>
+    <p>親愛的卡友，Dcard 正在進行例行性維護，請稍後再回來。</p>
+    <div class="countdown" id="countdown">
+        <p>預計恢復時間：</p>
+        <p id="timer"></p>
+    </div>
+    <div class="message" id="message">
+        <p>感謝您的耐心等候！</p>
+    </div>
+</div>
+<script>
+    const countdown = document.getElementById('countdown');
+    const timerDisplay = document.getElementById('timer');
+    const message = document.getElementById('message');
+
+    // 設定預計恢復時間 (範例：1 小時後)
+    const recoveryTime = new Date();
+    recoveryTime.setHours(recoveryTime.getHours() + 1);
+
+    function updateCountdown() {
+        const now = new Date();
+        const timeLeft = recoveryTime - now;
+
+        if (timeLeft > 0) {
+            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            timerDisplay.textContent = `${hours} 小時 ${minutes} 分 ${seconds} 秒`;
+        } else {
+            countdown.style.display = 'none';
+            message.style.display = 'block';
+            clearInterval(interval);
+        }
+    }
+
+    updateCountdown(); // 立即執行一次
+    const interval = setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
