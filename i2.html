@@ -47,46 +47,78 @@
         font-size: 1.5em;
         font-weight: bold;
     }
-
-    .message {
+    #loading {
         display: none;
-        color: #008000;
-        font-weight: bold;
-    }</style>
+        text-align: center;
+        margin-top: 20px;
+        color: #efefef; /* 修改字體顏色為橘色 */
+        font-size: 1.5em; /* 修改字體大小為 1.5 倍 */
+        animation: wave 1.5s infinite ease-in-out; /* 添加動畫 */
+    }
+    #loading span {
+        display: inline-block; /* 讓 span 元素可以設定 transform */
+        animation: wave 1.5s infinite ease-in-out;
+    }
+
+    #loading span:nth-child(2) {
+        animation-delay: 0.2s; /* 第二個字延遲 0.2 秒 */
+    }
+
+    #loading span:nth-child(3) {
+        animation-delay: 0.4s; /* 第三個字延遲 0.4 秒 */
+    }
+
+    #loading span:nth-child(4) {
+        animation-delay: 0.6s; /* 第四個字延遲 0.6 秒 */
+    }
+
+    #loading span:nth-child(5) {
+        animation-delay: 0.8s; /* 第五個字延遲 0.8 秒 */
+    }
+
+    #loading span:nth-child(6) {
+        animation-delay: 1s; /* 第六個字延遲 1 秒 */
+    }
+
+    @keyframes wave {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-2px);
+        }
+    }
+    </style>
 </head>
 <body>
 <div class="container">
     <img src="logo.svg" alt="Dcard Logo" class="logo">
     <h1>網站管制中</h1>
-    <p>親愛的卡友，Dcard現在瀏覽量激增 ，請勿推擠稍後再回來。</p>
+    <p>親愛的卡友，Dcard現在瀏覽量激增，請勿推擠稍後再回來。</p>
+    <p>等待時請勿刷新或離開頁面</p>
     <div class="countdown" id="countdown">
-        <p>預計恢復時間：</p>
+        <p>預計等待時間：</p>
         <p id="timer"></p>
     </div>
-</div>
+    <div id="loading" style="display: none; text-align: center; margin-top: 20px;">
+        <span>載</span><span>入</span><span>中</span><span>.</span><span>.</span><span>.</span>
+    </div></div>
 <script>
     const countdown = document.getElementById('countdown');
     const timerDisplay = document.getElementById('timer');
-    const message = document.getElementById('message');
+    const loading = document.getElementById('loading'); // 取得 loading 元素
 
-    // 設定預計恢復時間 (範例：1 小時後)
-    const recoveryTime = new Date();
-    recoveryTime.setHours(recoveryTime.getHours() + 1);
+    let timeLeft = 15; // 設定倒數時間為 15 秒
 
     function updateCountdown() {
-        const now = new Date();
-        const timeLeft = recoveryTime - now;
+        timerDisplay.textContent = `${timeLeft} 秒`;
 
-        if (timeLeft > 0) {
-            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
-            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-            timerDisplay.textContent = `${hours} 小時 ${minutes} 分 ${seconds} 秒`;
-        } else {
+        if (timeLeft === 0) {
             countdown.style.display = 'none';
-            message.style.display = 'block';
+            loading.style.display = 'block'; // 顯示 loading 提示
             clearInterval(interval);
+        } else {
+            timeLeft--;
         }
     }
 
